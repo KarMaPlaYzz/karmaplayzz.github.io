@@ -4,25 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Support - KarmaPlaYzz</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/index.min.js"></script>
-    <script>
-        // Wait for EmailJS to load
-        function initializeEmailJS() {
-            if (typeof emailjs !== 'undefined') {
-                emailjs.init("E8YUsxpzxbkVPUsP-");
-                console.log('EmailJS initialized successfully');
-            } else {
-                console.error('EmailJS library failed to load');
-            }
-        }
-
-        // Try to initialize immediately
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeEmailJS);
-        } else {
-            initializeEmailJS();
-        }
-    </script>
     <style>
         * {
             margin: 0;
@@ -420,7 +401,7 @@
         </div>
 
         <div class="right-section">
-            <form id="supportForm">
+            <form id="supportForm" action="https://formspree.io/f/xjkpeldw" method="POST">
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" id="name" name="name" placeholder="Your name" required>
@@ -455,58 +436,26 @@
     </div>
 
     <script>
-        // Initialize EmailJS (free account)
-        if (typeof emailjs !== 'undefined') {
-            emailjs.init("E8YUsxpzxbkVPUsP-");
-        }
-
         const form = document.getElementById('supportForm');
         const successMessage = document.getElementById('successMessage');
         const errorMessage = document.getElementById('errorMessage');
-        let isSubmitting = false;
 
         form.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            if (typeof emailjs === 'undefined') {
-                errorMessage.textContent = '✗ Email service not available. Please try again later.';
-                errorMessage.style.display = 'block';
-                console.error('EmailJS not loaded');
-                return;
-            }
-
-            if (isSubmitting) return;
-            isSubmitting = true;
-
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const subject = document.getElementById('subject').value;
-            const message = document.getElementById('message').value;
-
-            successMessage.style.display = 'none';
+            // Formspree handles submission automatically
+            // Just hide error and show loading state
             errorMessage.style.display = 'none';
+        });
 
-            // Send email using EmailJS
-            emailjs.send('service_muv0ksg', 'template_a6ce2rs', {
-                from_name: name,
-                from_email: email,
-                subject: subject,
-                message: message,
-                to_email: 'karmaplayzz2002@gmail.com'
-            }).then(function(response) {
-                console.log('Email sent successfully:', response);
+        // Listen for form submission completion (Formspree redirects)
+        window.addEventListener('load', function() {
+            // Check if redirected back with success
+            if (window.location.hash === '#success') {
                 successMessage.style.display = 'block';
                 form.reset();
-                isSubmitting = false;
                 setTimeout(() => {
                     successMessage.style.display = 'none';
                 }, 3000);
-            }, function(error) {
-                console.error('EmailJS error:', error);
-                errorMessage.textContent = '✗ Error sending message. Please try again or contact directly.';
-                errorMessage.style.display = 'block';
-                isSubmitting = false;
-            });
+            }
         });
 
         // Interactive background effect
