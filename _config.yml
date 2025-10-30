@@ -1,0 +1,11 @@
+theme: jekyll-theme-slate
+title: KarMaPlaYzz Support
+description: Support and feedback page
+
+# Build settings
+markdown: kramdown
+exclude:
+  - .git
+  - .gitignore
+  - Gemfile
+  - Gemfile.lock
