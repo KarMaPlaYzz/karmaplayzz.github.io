@@ -442,8 +442,13 @@
 
         form.addEventListener('submit', function(e) {
             // Formspree handles submission automatically
-            // Just hide error and show loading state
+            // Hide error - don't reset yet, let Formspree capture the data first
             errorMessage.style.display = 'none';
+            
+            // Reset form after a small delay to let Formspree process
+            setTimeout(() => {
+                form.reset();
+            }, 100);
         });
 
         // Listen for form submission completion (Formspree redirects)
