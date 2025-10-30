@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Support - KarmaPlaYzz</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/index.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -401,28 +402,47 @@
     </div>
 
     <script>
+        // Initialize EmailJS (free account)
+        emailjs.init("E8YUsxpzxbkVPUsP-");
+
         const form = document.getElementById('supportForm');
         const successMessage = document.getElementById('successMessage');
         const errorMessage = document.getElementById('errorMessage');
+        let isSubmitting = false;
 
         form.addEventListener('submit', function(e) {
             e.preventDefault();
+
+            if (isSubmitting) return;
+            isSubmitting = true;
 
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const subject = document.getElementById('subject').value;
             const message = document.getElementById('message').value;
 
-            const mailtoLink = `mailto:karmaplayzz2002@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
 
-            window.location.href = mailtoLink;
-            
-            successMessage.style.display = 'block';
-            successMessage.textContent = '✓ Opening your email client...';
-            setTimeout(() => {
-                successMessage.style.display = 'none';
+            // Send email using EmailJS
+            emailjs.send('service_muv0ksg', 'template_a6ce2rs', {
+                from_name: name,
+                from_email: email,
+                subject: subject,
+                message: message,
+                to_email: 'karmaplayzz2002@gmail.com'
+            }).then(function(response) {
+                successMessage.style.display = 'block';
                 form.reset();
-            }, 3000);
+                isSubmitting = false;
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 3000);
+            }, function(error) {
+                errorMessage.style.display = 'block';
+                isSubmitting = false;
+                console.error('EmailJS error:', error);
+            });
         });
     </script>
 </body>
